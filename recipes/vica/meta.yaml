@@ -1,0 +1,55 @@
+{% set name = "vica" %}
+{% set version = "0.1.5" %}
+{% set file_ext = "tar.gz" %}
+{% set hash_type = "sha256" %}
+{% set hash_value = "daf0197866b239e75822aef3d7e892d5a651d81693e8cda2ef8ad12403da08ce" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  url: https://github.com/USDA-ARS-GBRU/vica/archive/v{{ version }}.tar.gz}
+  
+build:
+  number: 0
+  skip: True # [py27]
+  script:
+    - wget https://sourceforge.net/projects/bbmap/files/BBMap_37.75.tar.gz -O /tmp/BBMap_37.75.tar.gz
+    - tar -xvf /tmp/BBMap_37.75.tar.gz
+    - export PATH=$PATH:$PWD/bbmap
+    - wget https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux -O /home/travis/build/prodigal/prodigal
+    - chmod 755 /home/travis/build/prodigal/prodigal
+    - export PATH=$PATH:$PWD/prodigal
+
+requirements:
+  host:
+    - pip
+    - python
+    - tensorflow>=1.4
+    - pandas>=0.20.3
+    - numpy>=1.14',
+    - biopython>=1.70 
+    - scipy>=0.19.0
+    - khmer>=2.1.1
+    - ete3
+'pyfaidx>=0.5', 'pyyaml', 'scikit-learn>=0.19.0'],
+  run:
+    - pip
+test:
+  imports:
+    - vica
+
+about:
+  home: http://github.com/usda-ars-gbru/itsxpress
+  license: 'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication'
+  license_family: 'PUBLIC-DOMAIN'
+  license_file: ''
+  summary: 'ITSxpress: Software to rapidly trim the Internally Transcribed Spacer (ITS) region from FASTQ files'
+
+
+extra:
+  recipe-maintainers: 'Adam R. Rivers'
+  identifiers:
+    - biotools:ITSxpress
+- doi:10.5281/zenodo.1304349
