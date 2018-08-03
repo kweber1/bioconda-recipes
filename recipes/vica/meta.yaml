@@ -1,55 +1,59 @@
 {% set name = "vica" %}
-{% set version = "0.1.5" %}
-{% set file_ext = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash_value = "daf0197866b239e75822aef3d7e892d5a651d81693e8cda2ef8ad12403da08ce" %}
+{% set version = "0.1.6" %}
+
 
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
 
 source:
-  url: https://github.com/USDA-ARS-GBRU/vica/archive/v{{ version }}.tar.gz}
+  url: https://github.com/USDA-ARS-GBRU/vica/archive/v{{ version }}.tar.gz
+  sha256: 07eb3ff776f32670acbcdf319348ea102ff708b69f10028974dda35fbb1b5312
+
   
 build:
   number: 0
+  entry_points:
+    - vica=vica.vica_cli:main
+  script: python -m pip install --no-deps --ignore-installed .
   skip: True # [py27]
-  script:
-    - wget https://sourceforge.net/projects/bbmap/files/BBMap_37.75.tar.gz -O /tmp/BBMap_37.75.tar.gz
-    - tar -xvf /tmp/BBMap_37.75.tar.gz
-    - export PATH=$PATH:$PWD/bbmap
-    - wget https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux -O /home/travis/build/prodigal/prodigal
-    - chmod 755 /home/travis/build/prodigal/prodigal
-    - export PATH=$PATH:$PWD/prodigal
+  script: pip install ete3
 
 requirements:
   host:
     - pip
     - python
-    - tensorflow>=1.4
-    - pandas>=0.20.3
-    - numpy>=1.14',
-    - biopython>=1.70 
-    - scipy>=0.19.0
-    - khmer>=2.1.1
-    - ete3
-'pyfaidx>=0.5', 'pyyaml', 'scikit-learn>=0.19.0'],
   run:
     - pip
+    - python
+    - tensorflow>=1.4
+    - biopython>=1.70
+    - pandas>=0.20.3
+    - numpy>=1.14
+    - scipy>=0.19.0
+    - khmer>=2.1.1
+    - pyfaidx>=0.5
+    - pyyaml
+    - scikit-learn>=0.19.0
+    - bbmap
+    - prodigal
+
 test:
-  imports:
+  import:
     - vica
+  commands:
+    - vica --help
 
 about:
-  home: http://github.com/usda-ars-gbru/itsxpress
+  home: 'https://github.com/USDA-ARS-GBRU/vica'
   license: 'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication'
   license_family: 'PUBLIC-DOMAIN'
   license_file: ''
-  summary: 'ITSxpress: Software to rapidly trim the Internally Transcribed Spacer (ITS) region from FASTQ files'
+  summary: 'Vica: Software to find highly divergent DNA and RNA viruses in microbiomes'
 
 
 extra:
   recipe-maintainers: 'Adam R. Rivers'
   identifiers:
-    - biotools:ITSxpress
-- doi:10.5281/zenodo.1304349
+    - biotools:Vica
+    - doi:10.5281/zenodo.1304349
